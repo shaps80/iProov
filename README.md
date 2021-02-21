@@ -1,6 +1,6 @@
 ![iProov: Flexible authentication for identity assurance](images/banner.jpg)
 
-# iProov Biometrics iOS SDK v8.1.1
+# iProov Biometrics iOS SDK v8.2.0
 
 ## Table of contents
 
@@ -29,7 +29,7 @@ The framework has been written in Swift 5.3, and we recommend use of Swift for t
 
 ### Dependencies
 
-The iProov Biometrics SDK has a dependency on [Socket.IO-Client-Swift](https://github.com/socketio/socket.io-client-swift). This dependency will be automatically included if installing via Cocoapods. Carthage users need to ensure that this dependency is added to their Cartfile and this is discussed below.
+The iProov Biometrics SDK has a dependency on [Socket.IO-Client-Swift](https://github.com/socketio/socket.io-client-swift). This dependency will be automatically included if installing via Cocoapods.
 
 The SDK also includes the following third-party code:
 
@@ -44,7 +44,7 @@ These dependencies are vendored and compiled into the SDK, this requires no acti
 
 Module stability is supported in Swift 5.1 (Xcode 11) and above. The advantage of this is that the SDK no longer needs to be recompiled for every new version of the Swift compiler.
 
-iProov is built with the _"Build Libraries for Distribution"_ build setting enabled, which means that its dependencies must also be built in the same fashion. However, this is still not fully supported in either Cocoapods nor Carthage as of December 2020, therefore some workarounds are required (see installation documentation for details).
+iProov is built with the _"Build Libraries for Distribution"_ build setting enabled, which means that its dependencies must also be built in the same fashion. However, this is still not fully supported in either Cocoapods nor Carthage as of January 2021, therefore some workarounds are required (see installation documentation for details).
 
 ## Repository contents
 
@@ -101,27 +101,28 @@ The SDK is distributed as an XCFramework, therefore **you are required to use Co
 
 ### Carthage
 
-Cocoapods is recommend for the easiest integration, however we also support Carthage. 
-Full instructions installing and setting up Carthage [are available here](https://github.com/Carthage/Carthage).
+Cocoapods is recommend for the easiest integration, however we also support Carthage. Full instructions installing and setting up Carthage [are available here](https://github.com/Carthage/Carthage).
 
-At the time of writing, Carthage still does not properly support XCFrameworks, therefore it will install the traditional fat framework instead.
+The SDK is distributed as an XCFramework, therefore **you are required to use Carthage 0.37.0 or newer**.
 
 1. Add the following to your Cartfile:
 
 	```
 	github "socketio/socket.io-client-swift" == 15.2.0
-	binary "https://raw.githubusercontent.com/iProov/ios/master/carthage/IProov.json"
+	binary "https://raw.githubusercontent.com/iProov/ios/master/iProov.json"
 	```
 
-2. You can now build the dependencies with Carthage (see the note below about the custom build settings for module stability).
+2. You can now build the dependencies with Carthage:
 
-	```bash
-	echo 'BUILD_LIBRARY_FOR_DISTRIBUTION=YES'>/tmp/iproov.xcconfig; XCODE_XCCONFIG_FILE=/tmp/iproov.xcconfig carthage build; rm /tmp/iproov.xcconfig
+	```sh
+	echo 'BUILD_LIBRARY_FOR_DISTRIBUTION=YES'>/tmp/config.xcconfig; XCODE_XCCONFIG_FILE=/tmp/config.xcconfig carthage update --use-xcframeworks --platform ios; rm /tmp/config.xcconfig
 	```
+	
+	> NOTE: You must use this exact build command rather than a normal `carthage update`. It will set `BUILD_LIBRARIES_FOR_DISTRIBUTION` to ensure that iProov's dependencies are built for distribution, build XCFrameworks instead of standard fat frameworks (`--use-xcframeworks`) and avoid a linking issue with SocketIO if you attempt to build for platforms other than iOS (`--platform ios`).
+	
+3. From the Carthage/Build folder, add iProov.xcframework, SocketIO.xcframework & Starscream.xcframework to your app's *"Frameworks, Libraries, and Embedded Content"* section.
 
-	> **MODULE STABILITY WORKAROUND:** The iProov SDK supports module stability and therefore all its dependencies must be built in with the "Build Libraries for Distribution" setting enabled, however this is not currently supported in Carthage. Running this custom build command will ensure Xcode builds the dependencies with the correct settings. Once Carthage supports module stability, this workaround can be removed. Progress on this feature can be tracked [here](https://github.com/Carthage/Carthage/pull/2881).
-
-3. Add an `NSCameraUsageDescription` entry to your app's Info.plist, with the reason why your app requires camera access (e.g. "To iProov you in order to verify your identity.")
+4. Add an `NSCameraUsageDescription` entry to your app's Info.plist, with the reason why your app requires camera access (e.g. "To iProov you in order to verify your identity.")
 
 ## Get started
 
@@ -146,53 +147,54 @@ Please consult our [REST API documentation](https://secure.iproov.me/docs.html) 
 Once you have obtained a token, you can simply call `IProov.launch()`:
 
 ```swift
-IProov.launch(streamingURL: "https://eu.rp.secure.iproov.me", // Update this if streaming to an endpoint other than EU
-              token: "{{ your token here }}", // TODO: Set your token here
-              callback: { status in
+let streamingURL = "https://eu.rp.secure.iproov.me" // Substitute as appropriate
+let token = "{{ your token here }}"
 
-                  switch status {
-                  case .connecting:
-                      // The SDK is connecting to the server. You should provide an indeterminate progress indicator
-                      // to let the user know that the connection is taking place.
+IProov.launch(streamingURL: streamingURL, token: token) { status in
 
-                  case .connected:
-                      // The SDK has connected, and the iProov user interface will now be displayed. You should hide
-                      // any progress indication at this point.
+    switch status {
+    case .connecting:
+        // The SDK is connecting to the server. You should provide an indeterminate progress indicator
+        // to let the user know that the connection is taking place.
 
-                  case let .processing(progress, message):
-                      // The scan has completed, and the SDK will update your app with the progress of streaming
-                      // to the server and authenticating the user.
-                      // This will be called multiple times as the progress updates.
+    case .connected:
+        // The SDK has connected, and the iProov user interface will now be displayed. You should hide
+        // any progress indication at this point.
 
-                  case let .success(result):
-                      // The user was successfully verified/enrolled and the token has been validated.
-                      // You can access the following properties:
-                      let token: String = result.token // The token passed back will be the same as the one passed in to the original call
-                      let frame: UIImage? = result.frame // An optional image containing a single frame of the user, if enabled for your service provider (see important security info below)
+    case let .processing(progress, message):
+        // The scan has completed, and the SDK will update your app with the progress of streaming
+        // to the server and authenticating the user.
+        // This will be called multiple times as the progress updates.
 
-                  case let .failure(result):
-                      // The user was not successfully verified/enrolled, as their identity could not be verified,
-                      // or there was another issue with their verification/enrollment.
-                      // You can access the following properties:
-                      let token: String = result.token // The token passed back will be the same as the one passed in to the original call
-                      let reason: String = result.reason // A human-readable reason of why the claim failed
-                      let feedbackCode: String = result.feedbackCode // A code referring to the failure reason (see list below)
-                      let frame: UIImage? = result.frame // An optional image containing a single frame of the user, if enabled for your service provider (see important security info below)
+    case let .success(result):
+        // The user was successfully verified/enrolled and the token has been validated.
+        // You can access the following properties:
+        let token: String = result.token // The token passed back will be the same as the one passed in to the original call
+        let frame: UIImage? = result.frame // An optional image containing a single frame of the user, if enabled for your service provider (see important security info below)
 
-                  case .cancelled:
-                      // The user cancelled iProov, either by pressing the close button at the top right, or sending
-                      // the app to the background.
+    case let .failure(result):
+        // The user was not successfully verified/enrolled, as their identity could not be verified,
+        // or there was another issue with their verification/enrollment.
+        // You can access the following properties:
+        let token: String = result.token // The token passed back will be the same as the one passed in to the original call
+        let reason: String = result.reason // A human-readable reason of why the claim failed
+        let feedbackCode: String = result.feedbackCode // A code referring to the failure reason (see list below)
+        let frame: UIImage? = result.frame // An optional image containing a single frame of the user, if enabled for your service provider (see important security info below)
 
-                  case let .error(error):
-                      // The user was not successfully verified/enrolled due to an error (e.g. lost internet connection)
-                      // along with an `iProovError` with more information about the error (NSError in Objective-C).
-                      // It will be called once, or never.
+    case .cancelled:
+        // The user cancelled iProov, either by pressing the close button at the top right, or sending
+        // the app to the background.
 
-                  @unknown default:
-                      // Reserved for future usage.
-                      break
-                  }
-})
+    case let .error(error):
+        // The user was not successfully verified/enrolled due to an error (e.g. lost internet connection)
+        // along with an `iProovError` with more information about the error (NSError in Objective-C).
+        // It will be called once, or never.
+
+        @unknown default:
+        // Reserved for future usage.
+        break
+    }
+}
 ```
 
 > **⚠️ SECURITY NOTICE:** You should never use iProov as a local authentication method. This means that:
