@@ -1,0 +1,16 @@
+{
+  "7.0.0": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_0_0.zip",
+  "7.1.0": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_1_0.zip",
+  "7.2.0-beta1": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_2_0-beta1.zip",
+  "7.2.0": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_2_0.zip",
+  "7.2.1": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_2_1.zip",
+  "7.2.2": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_2_2.zip",
+  "7.3.0": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_3_0.zip",
+  "7.4.0": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_4_0.zip",
+  "7.4.1": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_4_1.zip",
+  "7.4.2": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_4_2.zip",
+  "7.5.0": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_7_5_0.zip",
+  "8.0.0": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_8_0_0.zip",
+  "8.1.0": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_8_1_0.zip",
+  "8.1.1": "https://raw.githubusercontent.com/iProov/ios/master/carthage/iProov_8_1_1.zip"
+}
