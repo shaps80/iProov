@@ -7,7 +7,7 @@ let package = Package(
     products: [
         .library(
             name: "iProov",
-            type: .dynamic,
+            type: .library,
             targets: ["iProov"]),
     ],
     dependencies: [
