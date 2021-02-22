@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		54C7A91625E4093F00E36B9C /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 54C7A91525E4093F00E36B9C /* SocketIO */; };
 		BA338943DE7F765A1E15428D /* Pods_WaterlooBank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 822A5013F35E89DCBB9CCCE5 /* Pods_WaterlooBank.framework */; };
 		FC31DDBE1B3B3A63006F1A64 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC31DDBD1B3B3A63006F1A64 /* AccountViewController.swift */; };
 		FC4AA0621B38C7D60053C313 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4AA0611B38C7D60053C313 /* AppDelegate.swift */; };
@@ -49,6 +50,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA338943DE7F765A1E15428D /* Pods_WaterlooBank.framework in Frameworks */,
+				54C7A91625E4093F00E36B9C /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,9 @@
 			dependencies = (
 			);
 			name = WaterlooBank;
+			packageProductDependencies = (
+				54C7A91525E4093F00E36B9C /* SocketIO */,
+			);
 			productName = WaterlooBank;
 			productReference = FC4AA05C1B38C7D60053C313 /* WaterlooBank.app */;
 			productType = "com.apple.product-type.application";
@@ -147,7 +152,6 @@
 				TargetAttributes = {
 					FC4AA05B1B38C7D60053C313 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 7RCKTQUSPF;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
@@ -163,6 +167,9 @@
 				Base,
 			);
 			mainGroup = FC4AA0531B38C7D60053C313;
+			packageReferences = (
+				54C7A91425E4093F00E36B9C /* XCRemoteSwiftPackageReference "socket" */,
+			);
 			productRefGroup = FC4AA05D1B38C7D60053C313 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -367,7 +374,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -379,7 +387,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7RCKTQUSPF;
+				DEVELOPMENT_TEAM = V2CWYL9AN8;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -392,7 +400,10 @@
 				);
 				INFOPLIST_FILE = WaterlooBank/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.waterloobank.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -408,7 +419,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7RCKTQUSPF;
+				DEVELOPMENT_TEAM = V2CWYL9AN8;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -421,7 +432,10 @@
 				);
 				INFOPLIST_FILE = WaterlooBank/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.waterloobank.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -452,6 +466,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		54C7A91425E4093F00E36B9C /* XCRemoteSwiftPackageReference "socket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 16.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		54C7A91525E4093F00E36B9C /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54C7A91425E4093F00E36B9C /* XCRemoteSwiftPackageReference "socket" */;
+			productName = SocketIO;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FC4AA0541B38C7D60053C313 /* Project object */;
 }

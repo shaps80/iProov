@@ -7,7 +7,11 @@ let package = Package(
     products: [
         .library(
             name: "iProov",
+            type: .dynamic,
             targets: ["iProov"]),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/socketio/socket.io-client-swift", from: "16.0.0")
     ],
     targets: [
         .binaryTarget(
