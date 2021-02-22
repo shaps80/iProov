@@ -7,7 +7,6 @@ let package = Package(
     products: [
         .library(
             name: "iProov",
-            type: .library,
             targets: ["iProov"]),
     ],
     dependencies: [
